@@ -1,52 +1,71 @@
+import moment from 'moment';
 import React from 'react';
 
 import { stationList, getPlaylist } from '../api/PandoraClient';
 
-export default class HomePageContainer extends React.Component {
-  constructor(props) {
-    super(props);
+function formatDuration(totalSeconds) {
+  if (!totalSeconds || isNaN(totalSeconds)) {
+    return '0:00';
+  }
 
-    this.state = {
+  var minutes = Math.round(totalSeconds / 60);
+  var seconds = Math.round(totalSeconds % 60);
+  var secondsPadded = seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+  return minutes + ':' + secondsPadded;
+}
+
+export default React.createClass({
+  getInitialState() {
+    return {
       activeSong: null,
-      history: [],
+      activeAudio: null,
+      elapsed: 0,
       playlist: [],
       stations: []
     };
-  }
+  },
   componentWillMount() {
     stationList().then((stations) => {
       this.setState({ stations: stations });
     });
-  }
-  componentWillUpdate() {
-    // if (this.refs.controls) {
-    //   this.refs.controls.getDOMNode().removeEventListener("ended");
-    // }
-  }
-  componentDidUpdate() {
-    // if (this.refs.controls) {
-    //   this.refs.controls.getDOMNode().addEventListener("ended", this._onSongEnd);
-    // }
-  }
-  _onSongEnd(e) {
-    console.log(ended);
+  },
+  _loadNextSong() {
     let currentIndex = this.state.playlist.indexOf(this.state.activeSong);
+    let nextSong = this.state.playlist[currentIndex + 1];
+    this._loadSong(nextSong);
+  },
+  _loadSong(song) {
+    let activeAudio = new Audio(song.url);
+    activeAudio.ontimeupdate = this._onTimeUpdate;
+    activeAudio.onended = this._onSongEnd;
 
     this.setState({
-      activeSong: this.state.playlist[currentIndex + 1],
-      history: history.concat(this.state.activeSong)
+      activeAudio: activeAudio,
+      activeSong: song
     });
-  }
+  },
+  _onSongEnd() {
+    this._loadNextSong();
+    this._play();
+  },
   _onSelectStation(token, e) {
     e.preventDefault();
 
     getPlaylist(token).then((playlist) => {
-      this.setState({
-        activeSong: playlist[0],
-        playlist: playlist
-      });
+      this.state.playlist = playlist;
+      this._loadSong(playlist[0]);
     });
-  }
+  },
+  _play() {
+    this.state.activeAudio.play();
+  },
+  _pause() {
+    this.state.activeAudio.pause();
+  },
+  _onTimeUpdate() {
+    this.forceUpdate();
+  },
   _renderStationList() {
     if (!this.state.stations.length) return;
 
@@ -59,7 +78,7 @@ export default class HomePageContainer extends React.Component {
     });
 
     return (<ul>{stations}</ul>);
-  }
+  },
   _renderPlaylist() {
     if (!this.state.playlist.length) return;
 
@@ -67,7 +86,7 @@ export default class HomePageContainer extends React.Component {
       return (
         <li key={song.id}>
           <div className="song">
-            <img src={song.album.imageUrl} />
+            <img src={song.album.imageUrl} height="50" width="50" />
             <p>Track: {song.name}</p>
             <p>Artist: {song.artist.name}</p>
             <p>Album: {song.album.name}</p>
@@ -77,16 +96,24 @@ export default class HomePageContainer extends React.Component {
     });
 
     return (<ul>{songs}</ul>);
-  }
+  },
   _renderAudioControls() {
-    if (!this.state.activeSong) return;
+    if (!this.state.activeAudio) return;
+
+    var elapsed = this.state.activeAudio.currentTime || 0;
+    var duration = this.state.activeAudio.duration || 0;
 
     return (
-      <audio controls ref="controls" onEnded={this._onSongEnd.bind(this)}>
-        <source src={this.state.activeSong.url} type="audio/mpeg" />
-      </audio>
+      <div>
+        <span>{formatDuration(elapsed)}</span>
+        <span>of</span>
+        <span>{formatDuration(duration)}</span>
+        <progress max={duration} value={elapsed}></progress>
+        <button onClick={this._play}>Play</button>
+        <button onClick={this._pause}>Pause</button>
+      </div>
     );
-  }
+  },
   render() {
     return (
       <div>
@@ -97,4 +124,4 @@ export default class HomePageContainer extends React.Component {
       </div>
     );
   }
-}
+});

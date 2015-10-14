@@ -54,7 +54,6 @@ function createRequestor(clientInfo) {
             return reject("Unable to parse JSON");
           }
 
-
           switch (data.stat) {
             case "ok":
               if (!data.hasOwnProperty("result")) {

@@ -1,13 +1,23 @@
-# electron-react-boilerplate
+# Pandoratron
 
-[![NPM version][npm-image]][npm-url]
-[![Dependency Status][david_img]][david_site]
+Streaming audio on OS X
 
-![](./erb-logo.png)
+## Tasks
 
-> Live editing development on desktop app
-
-[Electron](http://electron.atom.io/) application boilerplate based on [React](https://facebook.github.io/react/), [React Router](http://rackt.github.io/react-router/), [Webpack](http://webpack.github.io/docs/), [React Hot Loader](http://gaearon.github.io/react-hot-loader/) for rapid application development
+[ ] Refactor React components
+[ ] Style UI
+  [ ] Style login
+  [ ] Style stations
+  [ ] Style current song
+  [ ] Style controls
+[ ] Implement "Keep me logged in"
+[ ] Preload next song
+[ ] Track played songs
+[ ] Implement skip
+[ ] Implement thumbs up, thumbs down
+[ ] Enable media keys
+[ ] Package as executable
+[ ] Allow executable to auto-update
 
 ## Install
 
@@ -23,22 +33,6 @@ $ npm install
 npm run hot-server
 npm run start-hot
 ```
-
-## Externals
-
-If you use any 3rd party libraries which can't be built with webpack, you must list them in your `webpack.config.base.js`：
-
-```javascript
-externals: [
-  // put your node 3rd party libraries which can't be built with webpack here (mysql, mongodb, and so on..)
-]
-```
-
-You can find those lines in the file.
-
-## CSS Modules support
-
-Import css file as [css-modules](https://github.com/css-modules/css-modules) using `.module.css`.
 
 ## Package
 
@@ -70,16 +64,3 @@ We add some module's `peerDependencies` to ignore option as default for applicat
 #### Building windows apps from non-windows platforms
 
 Please checkout [Building windows apps from non-windows platforms](https://github.com/maxogden/electron-packager#building-windows-apps-from-non-windows-platforms).
-
-## To Do
-
-- yeoman generator
-- support react devtools when [atom/electron#915](https://github.com/atom/electron/issues/915) fixed
-
-## License
-MIT © [C. T. Lin](https://github.com/chentsulin)
-
-[npm-image]: https://img.shields.io/npm/v/electron-react-boilerplate.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/electron-react-boilerplate
-[david_img]: https://img.shields.io/david/chentsulin/electron-react-boilerplate.svg
-[david_site]: https://david-dm.org/chentsulin/electron-react-boilerplate
