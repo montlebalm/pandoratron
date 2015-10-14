@@ -4,20 +4,21 @@ Streaming audio on OS X
 
 ## Tasks
 
-[ ] Refactor React components
-[ ] Style UI
-  [ ] Style login
-  [ ] Style stations
-  [ ] Style current song
-  [ ] Style controls
-[ ] Implement "Keep me logged in"
-[ ] Preload next song
-[ ] Track played songs
-[ ] Implement skip
-[ ] Implement thumbs up, thumbs down
-[ ] Enable media keys
-[ ] Package as executable
-[ ] Allow executable to auto-update
+- [ ] Refactor React components
+- [ ] Style UI
+  - [ ] Style login
+  - [ ] Style stations
+  - [ ] Style current song
+  - [ ] Style controls
+- [ ] Implement "Keep me logged in"
+- [ ] Preload next song
+- [ ] Track played songs
+- [ ] Implement skip
+- [ ] Implement thumbs up, thumbs down
+- [ ] Enable media keys
+- [ ] Package as executable
+- [ ] Allow executable to auto-update
+- [ ] Disconnect from boilerplate project
 
 ## Install
 
